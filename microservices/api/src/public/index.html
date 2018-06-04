@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Gitlab Bulk Issue Creator</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>  
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <script>  
+    $(document).ready(function () {
+      $('#uploadForm').submit(function () {
+        $("#status").empty().text("File is uploading...");
+
+        $(this).ajaxSubmit({
+
+          error: function (xhr) {
+            $("#status").empty().text('Error: ' + xhr.status);
+          },
+
+          success: function (response) {
+            console.log(response)
+            $("#status").empty().text(response);
+          }
+        });
+
+        return false;
+      });
+    });  
+  </script>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+
+      </div>
+    </div>
+  </nav>
+
+  <div class="container text-center">
+    <form class="form-horizontal" enctype="multipart/form-data" action="/upload" method="POST" id="uploadForm">
+      <fieldset>
+
+        <!-- Form Name -->
+        <legend>Gitlab Bulk Issue Creator</legend>
+
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="textinput">Gitlab Project ID</label>
+          <div class="col-md-4">
+            <input id="projectId" name="projectId" type="number" placeholder="Project ID for the issues" class="form-control input-md"
+              required="">
+            <span class="help-block">This can be found at "Project Settings/General"</span>
+          </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="textinput">Access Token</label>
+          <div class="col-md-4">
+            <input id="token" name="token" type="text" placeholder="Personal Access Token" class="form-control input-md" required="">
+            <span class="help-block">Create it in the "User Settings/Access Tokens" menu on Gitlab and set the scope to API</span>
+          </div>
+        </div>
+
+        <!-- File Button -->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="filebutton">Issues (csv file)</label>
+          <div class="col-md-4">
+            <input id="file" name="file" class="input-file" type="file" required="">
+            <span class="help-block">Issues file should be in <a href="issues.csv">this</a> format.</span>
+          </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="textinput">Email ID</label>
+          <div class="col-md-4">
+            <input id="email" name="email" type="email" placeholder="Email ID" class="form-control input-md" required="">
+            <span class="help-block">You will be notified once task is complete</span>
+          </div>
+        </div>
+
+        <!-- Button -->
+        <div class="form-group">
+          <input type="submit" value="SUBMIT" name="submit"><br/>
+        </div>
+
+      </fieldset>
+    </form>
+
+    <span id="status"></span>  
+
+  </div>
+
+
+
+</body>
+
+</html>
